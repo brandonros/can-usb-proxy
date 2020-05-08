@@ -23,18 +23,21 @@ const udpBind = async (socket) => {
   debug(`udpBind: address = ${socket.address().address} port = ${socket.address().port}`)
 }
 
+const buildUsbDevice = () => {
+  if (deviceType === 'gs_usb') {
+    return new GsUsb()
+  } else if (deviceType === 'cp2102') {
+    return new Cp2102()
+  } else {
+    throw new Error(`Invalid device type: ${deviceType}`)
+  }
+}
+
 const run = async () => {
   // setup udp socket
   const socket = dgram.createSocket('udp4')
   // setup usb device
-  let device = null
-  if (deviceType === 'gs_usb') {
-    device = new GsUsb()
-  } else if (deviceType === 'cp2102') {
-    device = new Cp2102()
-  } else {
-    throw new Error(`Invalid device type: ${deviceType}`)
-  }
+  const device = buildUsbDevice()
   await device.init()
   // send incoming UDP socket frames to USB device
   socket.on('message', async (frame) => {
