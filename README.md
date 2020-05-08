@@ -1,6 +1,11 @@
 # can-usb-proxy
 Remote diagnostic proxying via two-way OBD-II -> CAN -> USB -> UDP
 
+## Supported device types
+
+* cp2102 (Robotell USB-CAN Adapter) through https://github.com/brandonros/node-gs_usb
+* gs_usb (candleLight/CANtact/CANable/CANalyze) through https://github.com/brandonros/node-cp2102
+
 ## Server example (user running diagnostic software with VCI)
 
 ```shell
