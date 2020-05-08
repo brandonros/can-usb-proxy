@@ -3,8 +3,6 @@ const debug = require('debug')('vci-proxy')
 const GsUsb = require('gs_usb')
 const Cp2102 = require('cp2102')
 
-const vendorId = parseInt(process.env.VENDOR_ID, 16)
-const deviceId = parseInt(process.env.DEVICE_ID, 16)
 const requestArbitrationId = parseInt(process.env.REQUEST_ARBITRATION_ID, 16)
 const replyArbitrationId = parseInt(process.env.REPLY_ARBITRATION_ID, 16)
 const deviceType = process.env.DEVICE_TYPE
@@ -46,18 +44,17 @@ const run = async () => {
   let device = null
   if (deviceType === 'gs_usb') {
     device = new GsUsb()
-    await device.init()
   } else if (deviceType === 'cp2102') {
     device = new Cp2102()
-    await device.init()
   } else {
     throw new Error(`Invalid device type: ${deviceType}`)
   }
+  await device.init()
   // send incoming UDP socket frames to USB device
   socket.on('message', async (frame) => {
-    debug(`socketMessage: frame=${frame.toString('hex')}`)
     const arbitrationId = frame.readUInt32LE(0)
     const data = frame.slice(4)
+    debug(`socketMessage: arbitrationId=${arbitrationId.toString(16)} data=${data.toString('hex')}`)
     await device.sendCanFrame(arbitrationId, data)
   })
   // send incoming USB device frames to UDP socket
@@ -73,6 +70,7 @@ const run = async () => {
     debug(`deviceFrame: arbitrationId=${arbitrationId.toString(16)} data=${data.toString('hex')}`)
     await udpSend(socket, frame)
   })
+  // start USB device receive loop
   await device.recv()
 }
 
