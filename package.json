@@ -10,9 +10,10 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
+    "cp2102": "git+https://github.com/brandonros/node-cp2102.git",
     "cross-env": "^7.0.2",
     "debug": "^4.1.1",
     "gs_usb": "git+https://github.com/brandonros/node-gs_usb.git",
-    "cp2102": "git+https://github.com/brandonros/node-cp2102.git"
+    "ws": "^7.2.5"
   }
 }
