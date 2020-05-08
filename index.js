@@ -28,11 +28,14 @@ const run = async () => {
       host: process.env.SERVER_ADDR,
       port: process.env.SERVER_PORT
     })
-    ws = await new Promise(resolve => wss.on('connect', resolve))
+    ws = await new Promise(resolve => wss.on('connection', resolve))
   } else {
     ws = new WebSocket(`ws://${process.env.SERVER_ADDR}:${process.env.SERVER_PORT}`)
     await new Promise(resolve => ws.on('open', resolve))
   }
+  ws.on('close', () => {
+    process.exit(1)
+  })
   // setup usb device
   const device = buildUsbDevice()
   await device.init()
@@ -44,7 +47,7 @@ const run = async () => {
     device.sendCanFrame(arbitrationId, data)
   })
   // send incoming USB device frames to socket
-  device.on('frame', async (frame) => {
+  device.on('frame', (frame) => {
     const arbitrationId = frame.readUInt32LE(0)
     const data = frame.slice(4)
     const shouldProxyFrame = (mode === 'client' && arbitrationId === replyArbitrationId) ||
