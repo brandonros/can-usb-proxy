@@ -39,7 +39,6 @@ const udpBind = (socket) => {
 const run = async () => {
   // setup udp socket
   const socket = dgram.createSocket('udp4')
-  await udpBind(socket)
   // setup usb device
   let device = null
   if (deviceType === 'gs_usb') {
@@ -57,6 +56,7 @@ const run = async () => {
     debug(`socketMessage: arbitrationId=${arbitrationId.toString(16)} data=${data.toString('hex')}`)
     await device.sendCanFrame(arbitrationId, data)
   })
+  await udpBind(socket)
   // send incoming USB device frames to UDP socket
   device.on('frame', async (frame) => {
     const arbitrationId = frame.readUInt32LE(0)
