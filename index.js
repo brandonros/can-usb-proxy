@@ -1,4 +1,5 @@
 const dgram = require('dgram')
+const util = require('util')
 const debug = require('debug')('vci-proxy')
 const GsUsb = require('gs_usb')
 const Cp2102 = require('cp2102')
@@ -9,31 +10,17 @@ const deviceType = process.env.DEVICE_TYPE
 const mode = process.env.MODE
 
 const udpSend = (socket, frame) => {
-  return new Promise((resolve, reject) => {
-    const destinationPort = mode === 'client' ? process.env.SERVER_PORT : process.env.CLIENT_PORT
-    const destinationAddress = mode === 'client' ? process.env.SERVER_ADDR : process.env.CLIENT_ADDR
-    debug(`udpSend: frame=${frame.toString('hex')}`)
-    socket.send(frame, destinationPort, destinationAddress, (err) => {
-      if (err) {
-        return reject(err)
-      }
-      resolve()
-    })
-  })
+  const destinationPort = mode === 'client' ? process.env.SERVER_PORT : process.env.CLIENT_PORT
+  const destinationAddress = mode === 'client' ? process.env.SERVER_ADDR : process.env.CLIENT_ADDR
+  debug(`udpSend: frame=${frame.toString('hex')}`)
+  return util.promisify(socket.send).call(socket, frame, destinationPort, destinationAddress)
 }
 
-const udpBind = (socket) => {
-  return new Promise((resolve, reject) => {
-    const port = mode === 'client' ? process.env.CLIENT_PORT : process.env.SERVER_PORT
-    const address = mode === 'client' ? process.env.CLIENT_ADDR : process.env.SERVER_ADDR
-    socket.bind(port, address, (err) => {
-      if (err) {
-        return reject(err)
-      }
-      debug(`udpBind: address = ${socket.address().address} port = ${socket.address().port}`)
-      resolve()
-    })
-  })
+const udpBind = async (socket) => {
+  const port = mode === 'client' ? process.env.CLIENT_PORT : process.env.SERVER_PORT
+  const address = mode === 'client' ? process.env.CLIENT_ADDR : process.env.SERVER_ADDR
+  await util.promisify(socket.bind).call(socket, port, address)
+  debug(`udpBind: address = ${socket.address().address} port = ${socket.address().port}`)
 }
 
 const run = async () => {
