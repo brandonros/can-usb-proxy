@@ -4,8 +4,8 @@
   "description": "Remote diagnostic proxying via two-way OBD-II -> CAN -> USB -> UDP",
   "main": "index.js",
   "scripts": {
-    "server": "cross-env DEVICE_TYPE='gs_usb' REQUEST_ARBITRATION_ID='0x64D' REPLY_ARBITRATION_ID='0x5CD' VENDOR_ID='0x1d50' DEVICE_ID='0x606f' MODE='server' SERVER_PORT='40000' SERVER_ADDR='192.168.0.52' CLIENT_PORT='40001' CLIENT_ADDR='192.168.0.42' node index.js",
-    "client": "cross-env DEVICE_TYPE='cp2102' REQUEST_ARBITRATION_ID='0x64D' REPLY_ARBITRATION_ID='0x5CD' VENDOR_ID='0x1d50' DEVICE_ID='0x606f' MODE='client' SERVER_PORT='40000' SERVER_ADDR='192.168.0.52' CLIENT_PORT='40001' CLIENT_ADDR='192.168.0.42' node index.js"
+    "server": "cross-env DEVICE_TYPE='gs_usb' REQUEST_ARBITRATION_ID='0x64D' REPLY_ARBITRATION_ID='0x5CD' MODE='server' SERVER_PORT='40000' SERVER_ADDR='192.168.0.52' CLIENT_PORT='40001' CLIENT_ADDR='192.168.0.42' node index.js",
+    "client": "cross-env DEVICE_TYPE='cp2102' REQUEST_ARBITRATION_ID='0x64D' REPLY_ARBITRATION_ID='0x5CD' MODE='client' SERVER_PORT='40000' SERVER_ADDR='192.168.0.52' CLIENT_PORT='40001' CLIENT_ADDR='192.168.0.42' node index.js"
   },
   "author": "",
   "license": "ISC",
