@@ -40,11 +40,11 @@ const run = async () => {
   const device = buildUsbDevice()
   await device.init()
   // send incoming socket frames to USB device
-  ws.on('message', (frame) => {
+  ws.on('message', async (frame) => {
     const arbitrationId = frame.readUInt32LE(0)
     const data = frame.slice(4)
     debug(`socketMessage: arbitrationId=${arbitrationId.toString(16)} data=${data.toString('hex')}`)
-    device.sendCanFrame(arbitrationId, data)
+    await device.sendCanFrame(arbitrationId, data)
   })
   // send incoming USB device frames to socket
   device.on('frame', (frame) => {
