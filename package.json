@@ -4,8 +4,7 @@
   "description": "Remote diagnostic proxying via two-way OBD-II -> CAN -> USB -> UDP",
   "main": "index.js",
   "scripts": {
-    "server": "cross-env DEVICE_TYPE='gs_usb' REQUEST_ARBITRATION_ID='0x64D' REPLY_ARBITRATION_ID='0x5CD' MODE='server' SERVER_PORT='40000' SERVER_ADDR='192.168.0.52' CLIENT_PORT='40001' CLIENT_ADDR='192.168.0.42' node index.js",
-    "client": "cross-env DEVICE_TYPE='gs_usb' REQUEST_ARBITRATION_ID='0x64D' REPLY_ARBITRATION_ID='0x5CD' MODE='client' SERVER_PORT='40000' SERVER_ADDR='192.168.0.52' CLIENT_PORT='40001' CLIENT_ADDR='192.168.0.42' node index.js"
+    "run": "cross-env DEVICE_TYPE='gs_usb' REQUEST_ARBITRATION_ID='0x7E5' REPLY_ARBITRATION_ID='0x7ED' SERVER_PORT='40000' SERVER_ADDR='192.168.0.42' node index.js"
   },
   "author": "",
   "license": "ISC",
