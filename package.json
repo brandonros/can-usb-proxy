@@ -12,7 +12,7 @@
     "cp2102": "git+https://github.com/brandonros/node-cp2102.git",
     "cross-env": "^7.0.2",
     "debug": "^4.1.1",
-    "gs_usb": "git+https://github.com/brandonros/node-gs_usb.git",
+    "gs_usb": "git+https://github.com/brandonros/node-gs_usb.git#0849332265d2ca0ff4d3d9b4a24b36d6fef069f0",
     "ws": "^7.2.5"
   }
 }
